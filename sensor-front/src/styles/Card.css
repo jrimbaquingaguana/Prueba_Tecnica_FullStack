@@ -1,0 +1,194 @@
+/* ---------------- VARIABLES GLOBALES ---------------- */
+:root {
+  --bg-color: #f0f2f5;
+  --sidebar-bg: #ffffff;
+  --main-bg: #fafafa;
+  --card-bg: #ffffff;
+  --text-color: #000000;
+  --btn-bg: #007bff;
+  --btn-text: #ffffff;
+  --btn-border: #007bff;
+  --btn-hover-bg: #0056b3;
+  --btn-hover-text: #ffffff;
+  --input-bg: #ffffff;
+  --input-text: #000000;
+  --input-border: #ced4da;
+  --modal-bg: #ffffff;
+  --card-shadow: rgba(0,0,0,0.15);
+  --card-shadow-hover: rgba(0,0,0,0.2);
+  --progress-trail: #e0e0e0;
+  --progress-text: #343a40;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --sidebar-bg: #1e1e1e;
+  --main-bg: #1a1a1a;
+  --card-bg: #1e1e1e;
+  --text-color: #e0e0e0;
+  --btn-bg: #4dabf7;
+  --btn-text: #121212;
+  --btn-border: #4dabf7;
+  --btn-hover-bg: #339af0;
+  --btn-hover-text: #ffffff;
+  --input-bg: #2a2a2a;
+  --input-text: #e0e0e0;
+  --input-border: #444444;
+  --modal-bg: #2a2a2a;
+  --card-shadow: rgba(0,0,0,0.3);
+  --card-shadow-hover: rgba(0,0,0,0.5);
+  --progress-trail: #444444;
+  --progress-text: #e0e0e0;
+}
+
+/* ---------------- BODY Y DASHBOARD ---------------- */
+body, html {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  transition: all 0.5s ease;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------------- SIDEBAR ---------------- */
+.sidebar {
+  width: 250px;
+  background-color: var(--sidebar-bg);
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.5s ease;
+}
+
+.sidebar .user-info {
+  text-align: center;
+}
+
+.sidebar .user-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+}
+
+.sidebar .btn {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--btn-border);
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.sidebar .btn:hover {
+  background-color: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+}
+
+/* ---------------- MAIN ---------------- */
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  background-color: var(--main-bg);
+  transition: all 0.5s ease;
+}
+
+/* ---------------- TARJETAS ---------------- */
+.cards-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.sensor-card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-radius: 10px;
+  padding: 15px;
+  min-width: 250px;
+  max-width: 350px;
+  min-height: 280px;
+  margin: 10px;
+  box-shadow: 0 5px 15px var(--card-shadow);
+  transition: all 0.5s ease, transform 0.2s;
+}
+
+.sensor-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px var(--card-shadow-hover);
+}
+
+.sensor-card h5 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.progress-bars {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+}
+
+.progress-item p {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ---------------- INPUTS ---------------- */
+input, select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: var(--input-text);
+  opacity: 0.6;
+}
+
+/* ---------------- MODALES ---------------- */
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+/* ---------------- MEDIA QUERIES ---------------- */
+@media (max-width: 992px) {
+  .sensor-card { min-width: 220px; max-width: 280px; padding: 0.8rem; }
+  .progress-item { width: 60px; }
+}
+
+@media (max-width: 768px) {
+  .sensor-card { min-width: 180px; max-width: 220px; }
+  .progress-item { width: 50px; }
+  .progress-item p { font-size: 0.7rem; }
+  .sensor-card h5 { font-size: 1rem; }
+}
+
+@media (max-width: 576px) {
+  .cards-container { flex-direction: column; align-items: center; }
+  .sensor-card { width: 90%; max-width: 300px; }
+}
