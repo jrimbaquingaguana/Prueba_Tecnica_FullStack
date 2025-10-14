@@ -44,7 +44,7 @@ const formatDate = (timestamp) => {
 export default function Card() {
   const dispatch = useDispatch();
   const sensors = useSelector((state) => state.sensors);
-  const theme = useSelector((state) => state.theme.mode); // ✅ Obtener tema del store Redux
+  const theme = useSelector((state) => state.theme.mode); // Obtener tema del store Redux
   const navigate = useNavigate();
 
   const [hiddenSensors, setHiddenSensors] = useState(() => {
@@ -71,9 +71,7 @@ export default function Card() {
   }, [hiddenSensors]);
 
   // Color del texto dinámico según el tema
-  const cardTextColor = getComputedStyle(document.documentElement)
-    .getPropertyValue('--card-text-color')
-    .trim();
+  const cardTextColor = theme === 'dark' ? '#fff' : '#000';
 
   // Colores por temperatura
   const getTemperatureColor = (temp) => {
@@ -100,7 +98,7 @@ export default function Card() {
     };
   };
 
-  // 🎨 Estilos del botón "Crear sensor" según el tema
+  // Estilos del botón "Crear sensor"
   const createButtonStyle = {
     backgroundColor: theme === 'dark' ? '#2563eb' : '#ec4899',
     borderColor: theme === 'dark' ? '#2563eb' : '#ec4899',
@@ -108,10 +106,8 @@ export default function Card() {
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   };
 
-
-  // Efecto hover
   const handleMouseEnter = (e) => {
-    e.target.style.backgroundColor = theme === 'dark' ? '#1e40af' : '#db2777'; // tono más fuerte
+    e.target.style.backgroundColor = theme === 'dark' ? '#1e40af' : '#db2777';
     e.target.style.borderColor = theme === 'dark' ? '#1e40af' : '#db2777';
     e.target.style.transform = 'scale(1.05)';
   };
@@ -122,7 +118,6 @@ export default function Card() {
     e.target.style.transform = 'scale(1)';
   };
 
-  // Funciones para ocultar/mostrar sensores
   const confirmHideSensor = (name) => {
     setSensorToHide(name);
     setShowConfirmHideModal(true);
@@ -152,6 +147,23 @@ export default function Card() {
       (search === '' || name.toLowerCase().includes(search.toLowerCase()))
   );
 
+  // Estilos dinámicos para input y select
+  const inputStyle = {
+    width: '200px',
+    backgroundColor: theme === 'dark' ? '#2c2c2c' : '#f0f0f0',
+    color: theme === 'dark' ? '#fff' : '#000',
+    border: `1px solid ${theme === 'dark' ? '#555' : '#ccc'}`,
+    borderRadius: '4px',
+  };
+
+  const selectStyle = {
+    width: '150px',
+    backgroundColor: theme === 'dark' ? '#2c2c2c' : '#f0f0f0',
+    color: theme === 'dark' ? '#fff' : '#000',
+    border: `1px solid ${theme === 'dark' ? '#555' : '#ccc'}`,
+    borderRadius: '4px',
+  };
+
   return (
     <div className="container-fluid" style={{ minHeight: '100vh', paddingTop: '1rem' }}>
       {/* Barra superior */}
@@ -165,7 +177,7 @@ export default function Card() {
             value={filterRegion}
             onChange={(e) => setFilterRegion(e.target.value)}
             className="form-select"
-            style={{ width: '150px' }}
+            style={selectStyle}
           >
             <option value="">Todas</option>
             {regions.map((region) => (
@@ -176,7 +188,7 @@ export default function Card() {
           </select>
         </div>
 
-        {/* Botón dinámico */}
+        {/* Botón Crear Sensor */}
         <button
           className="btn"
           onClick={handleShowCreateModal}
@@ -187,14 +199,23 @@ export default function Card() {
           Crear sensor
         </button>
 
-        <input
-          type="text"
-          placeholder="Buscar sensor..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="form-control"
-          style={{ width: '200px' }}
-        />
+      <input
+        type="text"
+        placeholder="Buscar sensor..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className={`form-control ${theme === 'dark' ? 'dark-mode-input' : 'light-mode-input'}`}
+        style={{
+          width: '200px',
+          backgroundColor: theme === 'dark' ? '#2c2c2c' : '#f0f0f0',
+          color: theme === 'dark' ? '#fff' : '#000',
+          border: `1px solid ${theme === 'dark' ? '#555' : '#ccc'}`,
+          borderRadius: '4px',
+          paddingLeft: '8px',
+        }}
+      />
+
+
       </div>
 
       {/* Mensaje si no hay resultados */}
@@ -237,11 +258,10 @@ export default function Card() {
                           className="btn btn-sm btn-outline-danger"
                           onClick={() => confirmHideSensor(name)}
                         >
-                          Ocultar
+                          Eliminar
                         </button>
                       </div>
 
-                      {/* Indicadores circulares */}
                       <div className="d-flex justify-content-around mb-2">
                         <div style={{ width: 60 }}>
                           <CircularProgressbar
@@ -269,7 +289,6 @@ export default function Card() {
                         </div>
                       </div>
 
-                      {/* Gráfico de área */}
                       <div style={{ width: '100%', height: 80 }}>
                         <ResponsiveContainer>
                           <AreaChart data={chartData}>
@@ -299,7 +318,6 @@ export default function Card() {
                         </ResponsiveContainer>
                       </div>
 
-                      {/* Estadísticas */}
                       <div className="mt-1">
                         <p className="mb-0" style={{ color: cardTextColor }}>
                           Prom: {stats.avgTemp}°C / {stats.avgHum}%
@@ -312,7 +330,6 @@ export default function Card() {
                         </p>
                       </div>
 
-                      {/* Botón detalles */}
                       <div className="text-center mt-1">
                         <button
                           className="btn btn-outline-primary btn-sm"

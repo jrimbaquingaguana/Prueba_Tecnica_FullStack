@@ -43,6 +43,16 @@
   --progress-text: #e0e0e0;
 }
 
+.dark-mode-input::placeholder {
+  color: #fff; /* blanco para modo oscuro */
+  opacity: 1; /* que no se vea transparente */
+}
+
+.light-mode-input::placeholder {
+  color: #555; /* gris para modo claro */
+  opacity: 1;
+}
+
 /* ---------------- BODY Y DASHBOARD ---------------- */
 body, html {
   background-color: var(--bg-color);

@@ -1,13 +1,21 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DetalleSensor from './pages/SensorDetail';
+import ResetPassword from './modal/RecuperarContrasena';
 import './App.css';
 
+// Componente para proteger rutas
+function PrivateRoute({ children }) {
+  const user = useSelector((state) => state.auth.user);
+  if (!user) return <Navigate to="/" replace />;
+  return children;
+}
+
 function App() {
-  const theme = useSelector((state) => state.theme.mode); // obtiene el tema de Redux
+  const theme = useSelector((state) => state.theme.mode);
 
   // Aplica el tema globalmente
   useEffect(() => {
@@ -30,15 +38,33 @@ function App() {
       }
     };
 
-    const cleanup = applyTheme(theme);
+    const cleanup = applyTheme(theme || 'dark'); // por defecto oscuro
     return cleanup;
   }, [theme]);
 
   return (
     <Routes>
+      {/* Rutas públicas */}
       <Route path="/" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/detalle/:sensorName" element={<DetalleSensor />} />
+      <Route path="/reset-password" element={<ResetPassword />} /> {/* 🔹 Nueva ruta */}
+
+      {/* Rutas privadas */}
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/detalle/:sensorName"
+        element={
+          <PrivateRoute>
+            <DetalleSensor />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

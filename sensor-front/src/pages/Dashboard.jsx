@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react'; // <-- agrega useState
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { setTheme } from '../redux/themeSlice';
 import { useNavigate } from 'react-router-dom';
 import defaultPhoto from '../assets/login.jpg';
+import PerfilModal from '../modal/Perfil'; // asegúrate que exporte default
+
 import { FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import Card from '../components/Card';
 import '../styles/Dashboard.css';
@@ -14,16 +16,16 @@ import html2canvas from 'html2canvas';
 export default function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPerfilModal, setShowPerfilModal] = useState(false);
+
   const { user } = useSelector(state => state.auth);
   const sensorsFromRedux = useSelector(state => state.sensors);
   const theme = useSelector(state => state.theme.mode);
 
-  // Obtenemos los sensores desde Redux o localStorage
   const sensors = Object.keys(sensorsFromRedux).length
     ? sensorsFromRedux
     : JSON.parse(localStorage.getItem('sensors') || '{}');
 
-  // Refs para cada sensor (para las gráficas)
   const chartRefs = useRef({});
   Object.keys(sensors).forEach(name => {
     if (!chartRefs.current[name]) {
@@ -66,12 +68,7 @@ export default function Dashboard() {
         : theme === 'dark'
         ? '#343a40'
         : '#fff',
-      color:
-        theme === 'dark'
-          ? state.value === 'light'
-            ? '#fff' // Claro en modo oscuro
-            : '#fff' // Oscuro en modo oscuro
-          : '#000',
+      color: theme === 'dark' ? '#fff' : '#000',
     }),
     menu: (provided) => ({
       ...provided,
@@ -100,30 +97,41 @@ export default function Dashboard() {
         container.style.width = '800px';
         container.style.padding = '20px';
         container.style.fontFamily = 'Arial, sans-serif';
+        container.style.backgroundColor = '#ffffff';
 
         const title = document.createElement('h2');
         title.innerText = `Sensor: ${sensorName} (Región: ${sensor.region})`;
+        title.style.textAlign = 'center';
+        title.style.color = '#1e3a8a';
         title.style.marginBottom = '10px';
         container.appendChild(title);
 
         const info = document.createElement('p');
         info.innerText = `Descargado por: ${user?.name || 'Usuario'} (${user?.role || 'Rol'}) - Fecha: ${formattedDate}`;
+        info.style.textAlign = 'center';
+        info.style.fontStyle = 'italic';
         info.style.marginBottom = '20px';
+        info.style.color = '#000';
         container.appendChild(info);
 
         const table = document.createElement('table');
         table.style.width = '100%';
-        table.style.borderCollapse = 'collapse';
+        table.style.borderCollapse = 'separate';
+        table.style.borderSpacing = '0';
+        table.style.borderRadius = '8px';
+        table.style.overflow = 'hidden';
         table.style.marginBottom = '20px';
+        table.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
         ['#', 'Temperatura', 'Humedad', 'Fecha y hora'].forEach(text => {
           const th = document.createElement('th');
           th.innerText = text;
-          th.style.padding = '8px';
-          th.style.border = '1px solid #dee2e6';
-          th.style.backgroundColor = '#f2f2f2';
+          th.style.padding = '10px';
+          th.style.backgroundColor = '#1e3a8a';
+          th.style.color = '#fff';
+          th.style.textAlign = 'center';
           headerRow.appendChild(th);
         });
         thead.appendChild(headerRow);
@@ -132,13 +140,15 @@ export default function Dashboard() {
         const tbody = document.createElement('tbody');
         sensor.history.slice().reverse().forEach((h, i) => {
           const row = document.createElement('tr');
-          row.style.backgroundColor = i % 2 === 0 ? '#fafafa' : '#fff';
+          row.style.backgroundColor = i % 2 === 0 ? '#f0f4ff' : '#ffffff';
           [i + 1, `${h.temp}°C`, `${h.hum}%`, new Date(h.timestamp).toLocaleString()]
             .forEach(cellText => {
               const td = document.createElement('td');
               td.innerText = cellText;
               td.style.padding = '8px';
-              td.style.border = '1px solid #dee2e6';
+              td.style.textAlign = 'center';
+              td.style.borderBottom = '1px solid #ddd';
+              td.style.color = '#000';
               row.appendChild(td);
             });
           tbody.appendChild(row);
@@ -152,13 +162,9 @@ export default function Dashboard() {
         pdfInstance.addImage(imgData, 'PNG', 30, 30, 540, (canvas.height * 540) / canvas.width);
         document.body.removeChild(container);
 
-        // Agregar gráficas
         if (sensor.history.length > 0 && chartRefs.current[sensorName]?.current) {
           pdfInstance.addPage();
-          const chartCanvas = await html2canvas(chartRefs.current[sensorName].current, {
-            scale: 2,
-            backgroundColor: '#ffffff',
-          });
+          const chartCanvas = await html2canvas(chartRefs.current[sensorName].current, { scale: 2, backgroundColor: '#ffffff' });
           const chartImg = chartCanvas.toDataURL('image/png');
           pdfInstance.addImage(chartImg, 'PNG', 30, 30, 540, (chartCanvas.height * 540) / chartCanvas.width);
         }
@@ -195,6 +201,7 @@ export default function Dashboard() {
         <div className="menu mt-3 d-flex flex-column gap-2">
           <button className="btn">Servicios</button>
           <button className="btn" onClick={downloadPDF}>Descargar datos</button>
+
         </div>
 
         <div className="theme-selector mt-4">
@@ -212,15 +219,23 @@ export default function Dashboard() {
           />
         </div>
 
+        
         <div className="logout mt-auto d-flex flex-column gap-2">
-          <button className="btn" onClick={() => navigate('/perfil')}>Perfil</button>
-          <button className="btn logout-btn" onClick={handleLogout}>Cerrar sesión</button>
+          <button className="btn logout-btn d-flex align-items-center gap-2" onClick={() => setShowPerfilModal(true)}>
+             Perfil
+          </button>
+          <button className="btn logout-btn d-flex align-items-center gap-2" onClick={handleLogout}>
+            <FiLogOut /> Cerrar sesión
+          </button>
         </div>
       </aside>
 
       <main className="main-content">
         <Card sensors={sensors} chartRefs={chartRefs.current} />
       </main>
+
+      {/* Modal */}
+      <PerfilModal show={showPerfilModal} onClose={() => setShowPerfilModal(false)} />
     </div>
   );
 }

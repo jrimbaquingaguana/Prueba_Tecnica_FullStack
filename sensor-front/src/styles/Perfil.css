@@ -1,0 +1,31 @@
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background-color: #fff;
+}
+
+.perfil-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #2563eb;
+}
+
+.dark-mode .perfil-card {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+.light-mode .perfil-card {
+  background-color: #fff;
+  color: #000;
+}
