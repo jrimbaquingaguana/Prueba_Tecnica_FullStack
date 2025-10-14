@@ -1,20 +1,29 @@
+/* ---------------- MODO OSCURO ---------------- */
 .login-container {
   height: 100vh;
-  background: #f5f5f5;
+  /* Degradado de arriba (negro) a abajo (gris oscuro) */
+  background: linear-gradient(to bottom, #000000, #2c2c2c);
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #ffffff; /* color de texto por defecto */
 }
 
 .login-card {
   width: 400px;
+  background-color: rgba(255, 255, 255, 0.05); /* ligero fondo transparente para resaltar la card */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .login-photo {
   width: 80px;
   height: 80px;
   object-fit: cover;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
 }
 
 .forgot-password {
@@ -24,5 +33,28 @@
 }
 
 .forgot-password:hover {
+  text-decoration: none;
+}
+
+/* ---------------- MODO CLARO ---------------- */
+.login-container.light-mode {
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  color: #000000; /* texto oscuro por defecto */
+}
+
+.login-card.light-mode {
+  background-color: rgba(255, 255, 255, 0.9); /* fondo claro para resaltar */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* sombra suave */
+}
+
+.login-photo.light-mode {
+  border: 2px solid #000; /* borde negro para modo claro */
+}
+
+.forgot-password.light-mode {
+  color: #0d6efd;
+}
+
+.forgot-password.light-mode:hover {
   text-decoration: none;
 }

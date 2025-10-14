@@ -1,3 +1,4 @@
+/* -------------------- CONTENEDOR PRINCIPAL -------------------- */
 .dashboard-container {
   display: flex;
   flex-direction: row; /* por defecto sidebar a la izquierda */
@@ -9,8 +10,6 @@
 /* -------------------- SIDEBAR -------------------- */
 .sidebar {
   width: 220px;
-  background-color: #343a40;
-  color: #fff;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -23,6 +22,7 @@
   z-index: 1000;
 }
 
+/* -------------------- USUARIO -------------------- */
 .user-info {
   margin-bottom: 40px;
   text-align: center;
@@ -35,6 +35,7 @@
   border-radius: 50%;
   margin-bottom: 10px;
   border: 2px solid #fff;
+  transition: border-color 0.3s;
 }
 
 .user-name {
@@ -48,6 +49,7 @@
   color: #ced4da;
 }
 
+/* -------------------- MENÚ -------------------- */
 .menu {
   margin-bottom: 20px;
 }
@@ -55,38 +57,29 @@
 .menu .btn {
   width: 100%;
   margin-bottom: 10px;
-  background-color: #3b82f6;
   border: none;
-  color: #fff;
   font-weight: 500;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
-.menu .btn:hover {
-  background-color: #2563eb;
-}
-
+/* -------------------- LOGOUT -------------------- */
 .logout {
   margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .logout .btn {
   display: flex;
   align-items: center;
-  gap: 8px;
   justify-content: center;
+  gap: 8px;
   width: 100%;
-  border: 2px solid #fff;
-  background-color: transparent;
-  color: #fff;
+  border: 2px solid transparent;
   font-weight: 500;
   padding: 8px 0;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.logout .btn:hover {
-  background-color: #fff;
-  color: #343a40;
+  transition: all 0.3s;
 }
 
 /* -------------------- MAIN CONTENT -------------------- */
@@ -99,9 +92,93 @@
   transition: all 0.3s ease;
 }
 
-/* -------------------- RESPONSIVE -------------------- */
+/* -------------------- TEMAS -------------------- */
+.dashboard-container.dark-mode {
+  color: #fff;
+}
 
-/* Tablets grandes */
+.dashboard-container.dark-mode .sidebar {
+  background-color: #181818; 
+  color: #fff;
+}
+
+.dashboard-container.dark-mode .user-photo {
+  border-color: #fff;
+}
+
+.dashboard-container.dark-mode .user-role {
+  color: #ced4da;
+}
+
+.dashboard-container.dark-mode .menu .btn {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.dashboard-container.dark-mode .menu .btn:hover {
+  background-color: #2563eb;
+}
+
+.dashboard-container.dark-mode .logout .btn {
+  border-color: #fff;
+  background-color: transparent;
+  color: #fff;
+}
+
+.dashboard-container.dark-mode .logout .btn:hover {
+  background-color: #fff;
+  color: #343a40;
+}
+
+.dashboard-container.dark-mode .main-content {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+/* -------------------- MODO CLARO -------------------- */
+.dashboard-container.light-mode {
+  color: #000000;
+}
+
+.dashboard-container.light-mode .sidebar {
+  background-color: oklch(1 0 0);
+  color: #000;
+}
+
+.dashboard-container.light-mode .user-photo {
+  border-color: #000000;
+}
+
+.dashboard-container.light-mode .user-role {
+  color: #495057;
+}
+
+.dashboard-container.light-mode .menu .btn {
+  background-color: rgb(251, 238, 251);
+  color: #000;
+}
+
+.dashboard-container.light-mode .menu .btn:hover {
+  background-color: rgb(251, 238, 251);
+}
+
+.dashboard-container.light-mode .logout .btn {
+  border-color: #f3e9fa;
+  background-color: transparent;
+  color: #000;
+}
+
+.dashboard-container.light-mode .logout .btn:hover {
+  background-color: #f3e9fa;
+  color: #000;
+}
+
+.dashboard-container.light-mode .main-content {
+  background-color: #f1f3f5;
+  color: #000;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 992px) {
   .sidebar {
     width: 180px;
@@ -111,7 +188,6 @@
   }
 }
 
-/* Tablets medianas y móviles grandes */
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column; /* sidebar arriba, main abajo */
@@ -123,7 +199,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    position: relative; /* deja de estar fijo */
+    position: relative;
     height: auto;
   }
 
@@ -156,7 +232,6 @@
   }
 }
 
-/* Móviles pequeños */
 @media (max-width: 576px) {
   .sidebar {
     flex-direction: column;
@@ -184,4 +259,9 @@
   .main-content {
     padding: 10px;
   }
+}
+
+/* -------------------- REACT-SELECT (Tema dinámico) -------------------- */
+.react-select__control {
+  transition: all 0.3s;
 }

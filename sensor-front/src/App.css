@@ -1,73 +1,46 @@
+/* ---------------- VARIABLES GLOBALES ---------------- */
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
   --card-bg: #f8f8f8;
+  --card-text-color: #000000; /* texto de las cartas en tema claro */
   --button-bg: #007bff;
-  --button-text: #ffffff;
+  --button-text: #979494;
   --sidebar-bg: #f1f1f1;
+
+ --main-gradient-top: #f3f3f9;     
+  --main-gradient-middle: oklch(0.145 0 0);  
+    /* gris un poco más oscuro */
 }
 
 [data-theme="dark"] {
   --bg-color: #121212;
   --text-color: #f0f0f0;
   --card-bg: #1e1e1e;
+    --card-text-color: #ffffff; /* texto de las cartas en tema oscuro */
   --button-bg: #4b9cff;
   --button-text: #ffffff;
   --sidebar-bg: #1b1b1b;
+
+  --main-gradient-top: #1a1a1a;
+  --main-gradient-middle: #262626;
+  --main-gradient-bottom: #2c2c2c;
 }
 
-/* Aplica variables */
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.card {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-}
-
-.btn {
-  background-color: var(--button-bg);
-  color: var(--button-text);
-}
-
-.sidebar {
-  background-color: var(--sidebar-bg);
-  color: var(--text-color);
-}
-/* Colores por defecto (claro) */
-:root {
-  --bg-color: #f0f2f5;      /* fondo principal */
-  --sidebar-bg: #ffffff;    /* sidebar */
-  --card-bg: #ffffff;       /* cartas */
-  --text-color: #000000;    /* texto principal */
-  --btn-bg: #007bff;        /* botones */
-  --btn-text: #ffffff;
-}
-
-/* Modo oscuro */
-[data-theme='dark'] {
-  --bg-color: #121212;
-  --sidebar-bg: #1e1e1e;
-  --card-bg: #2a2a2a;
-  --text-color: #e0e0e0;
-  --btn-bg: #3a86ff;
-  --btn-text: #ffffff;
-}
-
-/* Aplicar variables */
+/* ---------------- GENERAL ---------------- */
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: all 0.3s ease;
+  font-family: Arial, sans-serif;
 }
 
 .dashboard-container {
   display: flex;
+  min-height: 100vh;
 }
 
+/* ---------------- SIDEBAR ---------------- */
 .sidebar {
   width: 250px;
   background-color: var(--sidebar-bg);
@@ -76,16 +49,32 @@ body {
   flex-direction: column;
   padding: 1rem;
   transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
+/* ---------------- MAIN CONTENT ---------------- */
 .main-content {
   flex: 1;
-  padding: 1rem;
+  padding: 2rem;
+  margin-left: 225px; /* separación del sidebar */
+  transition: all 0.3s ease;
+  background: linear-gradient(
+    to bottom,
+    var(--main-gradient-top),
+    var(--main-gradient-middle),
+    var(--main-gradient-bottom)
+  );
 }
 
+/* ---------------- CARDS ---------------- */
 .card {
   background-color: var(--card-bg);
-  color: var(--text-color);
+  color: var(--card-text-color); /* dinámico según tema */
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
@@ -93,9 +82,18 @@ body {
   transition: all 0.3s ease;
 }
 
+/* ---------------- TEXTO DENTRO DE LAS CARTAS ---------------- */
+.card .temperature,
+.card .value,
+.card p {
+  color: var(--card-text-color); /* siempre dinámico según tema */
+  transition: color 0.3s ease;
+}
+
+/* ---------------- BUTTONS ---------------- */
 button {
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -105,4 +103,35 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 1200px) {
+  .main-content {
+    margin-left: 260px;
+    padding: 1.8rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .sidebar { width: 220px; }
+  .main-content { margin-left: 240px; padding: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    position: relative;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+  .main-content { margin-left: 0; padding: 1rem; }
+}
+
+@media (max-width: 576px) {
+  .sidebar { flex-direction: column; align-items: flex-start; }
+  .main-content { padding: 0.8rem; }
 }

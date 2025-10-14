@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  mode: 'auto' // 'auto', 'light', 'dark'
+  mode: localStorage.getItem('theme') || 'dark', // 🔹 modo oscuro por defecto
 };
 
 export const themeSlice = createSlice({
@@ -10,16 +10,9 @@ export const themeSlice = createSlice({
   reducers: {
     setTheme: (state, action) => {
       state.mode = action.payload;
-      // Aplica inmediatamente al HTML
-      if (state.mode === 'auto') {
-        const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        document.documentElement.setAttribute('data-theme', darkMediaQuery.matches ? 'dark' : 'light');
-        darkMediaQuery.addEventListener('change', () => {
-          document.documentElement.setAttribute('data-theme', darkMediaQuery.matches ? 'dark' : 'light');
-        });
-      } else {
-        document.documentElement.setAttribute('data-theme', state.mode);
-      }
+
+      // 🌙 Aplica el tema directamente al <html>
+      document.documentElement.setAttribute('data-theme', state.mode);
     },
   },
 });

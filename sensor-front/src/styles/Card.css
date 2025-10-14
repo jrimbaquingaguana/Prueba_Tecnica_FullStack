@@ -18,13 +18,15 @@
   --card-shadow-hover: rgba(0,0,0,0.2);
   --progress-trail: #e0e0e0;
   --progress-text: #343a40;
+   --card-text-color: #000000;
 }
 
 [data-theme="dark"] {
   --bg-color: #121212;
   --sidebar-bg: #1e1e1e;
   --main-bg: #1a1a1a;
-  --card-bg: #1e1e1e;
+  --card-bg: #f0eeee;
+  
   --text-color: #e0e0e0;
   --btn-bg: #4dabf7;
   --btn-text: #121212;
@@ -94,6 +96,7 @@ body, html {
   flex: 1;
   padding: 1rem;
   background-color: var(--main-bg);
+  margin-left: 225px; /* separa del sidebar */
   transition: all 0.5s ease;
 }
 
@@ -133,6 +136,15 @@ body, html {
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
   text-align: center;
+}
+
+/* ---------------- TEMPERATURA ---------------- */
+.sensor-card .temperature {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--text-color); /* cambia automáticamente según tema */
+  transition: color 0.3s ease;
 }
 
 .progress-bars {
