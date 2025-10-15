@@ -214,3 +214,7 @@ input::placeholder {
   .cards-container { flex-direction: column; align-items: center; }
   .sensor-card { width: 90%; max-width: 300px; }
 }
+.sensor-card *:focus {
+  outline: none;
+  box-shadow: none;
+}

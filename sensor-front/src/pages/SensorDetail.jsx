@@ -10,6 +10,8 @@ import SidebarLayout from './SidebarLayout';
 import { updateSensor } from '../redux/sensorsSlice';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { WiThermometer, WiHumidity } from "react-icons/wi"; 
+import { FaTemperatureHigh, FaTemperatureLow } from "react-icons/fa"; 
 
 
 export default function DetalleSensor() {
@@ -74,7 +76,7 @@ export default function DetalleSensor() {
   };
 
   const handleMouseEnter = (e) => {
-    e.target.style.backgroundColor = theme === 'dark' ? '#1e40af' : '#db2777';
+    e.target.style.backgroundColor = theme === 'dark' ? '#1e40af' : '#e871acff';
     e.target.style.transform = 'scale(1.05)';
   };
 
@@ -225,7 +227,9 @@ export default function DetalleSensor() {
               trailColor,
             })}
           />
-          <p className="text-center" style={{ color: tableTextColor }}>Temperatura</p>
+          <p className="text-center" style={{ color: tableTextColor, marginTop: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
+            <WiThermometer size={20} color="#ff9800" /> Temperatura
+          </p>
         </div>
         <div style={{ width: 150 }}>
           <CircularProgressbar
@@ -238,14 +242,16 @@ export default function DetalleSensor() {
               trailColor,
             })}
           />
-          <p className="text-center" style={{ color: tableTextColor }}>Humedad</p>
+          <p className="text-center" style={{ color: tableTextColor, marginTop: 15, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}>
+          <WiHumidity size={20} color="#4dabf7" /> Humedad
+</p>
         </div>
       </div>
 
       <hr style={{ borderColor: tableBorder }} />
 
       <h5 style={{ color: tableTextColor }}>Historial reciente</h5>
-      <div ref={tableRef} style={{ overflowX: 'auto' }}>
+      <div ref={tableRef} style={{ overflowX: 'auto', marginLeft:15 }}>
         <table
           className="shadow-sm rounded"
           style={{
@@ -300,13 +306,13 @@ export default function DetalleSensor() {
 
 
       {sensor.history.length > 5 && (
-        <div className="text-center mb-3">
+        <div className="text-center mb-3 " style={{marginTop:10}}>
           <button
             className="btn btn-sm btn-outline-primary"
             onClick={() => setExpanded(!expanded)}
             style={{
               color: theme === 'dark' ? '#fff' : '#000',
-              borderColor: theme === 'dark' ? '#2563eb' : '#ec4899',
+              borderColor: theme === 'dark' ? '#2563eb' : '#e871acff',
             }}
           >
             {expanded ? 'Mostrar menos ▲' : 'Mostrar más ▼'}
@@ -326,7 +332,7 @@ export default function DetalleSensor() {
             backgroundColor: 'transparent', // 🔹 sin fondo
           }}
       >
-        <ResponsiveContainer>
+        <ResponsiveContainer  style={{ marginLeft: -15, height: 200, width: '90%' }}>
           <LineChart data={chartData}>
             <XAxis dataKey="timestamp" stroke={tableTextColor} />
             <YAxis stroke={tableTextColor} />
@@ -335,6 +341,7 @@ export default function DetalleSensor() {
                 backgroundColor: tableBg,
                 borderColor: tableBorder,
                 color: tableTextColor,
+                
               }}
             />
             <Legend

@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react'; // <-- agrega useState
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { setTheme } from '../redux/themeSlice';
 import { useNavigate } from 'react-router-dom';
 import defaultPhoto from '../assets/login.jpg';
 import PerfilModal from '../modal/Perfil'; // asegúrate que exporte default
-
 import { FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import Card from '../components/Card';
 import '../styles/Dashboard.css';
@@ -28,9 +27,7 @@ export default function Dashboard() {
 
   const chartRefs = useRef({});
   Object.keys(sensors).forEach(name => {
-    if (!chartRefs.current[name]) {
-      chartRefs.current[name] = React.createRef();
-    }
+    if (!chartRefs.current[name]) chartRefs.current[name] = React.createRef();
   });
 
   const handleLogout = () => {
@@ -62,12 +59,8 @@ export default function Dashboard() {
       display: 'flex',
       alignItems: 'center',
       backgroundColor: state.isFocused
-        ? theme === 'dark'
-          ? '#555'
-          : '#e0e0e0'
-        : theme === 'dark'
-        ? '#343a40'
-        : '#fff',
+        ? theme === 'dark' ? '#555' : '#e0e0e0'
+        : theme === 'dark' ? '#343a40' : '#fff',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
     menu: (provided) => ({
@@ -85,8 +78,7 @@ export default function Dashboard() {
 
   const downloadPDF = async () => {
     try {
-      if (!sensors || Object.keys(sensors).length === 0)
-        throw new Error("No hay datos disponibles");
+      if (!sensors || Object.keys(sensors).length === 0) throw new Error("No hay datos disponibles");
 
       const pdf = new jsPDF('p', 'pt', 'a4');
       const now = new Date();
@@ -201,7 +193,10 @@ export default function Dashboard() {
         <div className="menu mt-3 d-flex flex-column gap-2">
           <button className="btn">Servicios</button>
           <button className="btn" onClick={downloadPDF}>Descargar datos</button>
-
+          {/* Botón adicional para gestionar usuarios */}
+          <button className="btn" onClick={() => navigate('/manage-users')}>
+            Gestionar usuarios
+          </button>
         </div>
 
         <div className="theme-selector mt-4">
@@ -219,12 +214,17 @@ export default function Dashboard() {
           />
         </div>
 
-        
         <div className="logout mt-auto d-flex flex-column gap-2">
-          <button className="btn logout-btn d-flex align-items-center gap-2" onClick={() => setShowPerfilModal(true)}>
-             Perfil
+          <button
+            className="btn logout-btn d-flex align-items-center gap-2"
+            onClick={() => setShowPerfilModal(true)}
+          >
+            Perfil
           </button>
-          <button className="btn logout-btn d-flex align-items-center gap-2" onClick={handleLogout}>
+          <button
+            className="btn logout-btn d-flex align-items-center gap-2"
+            onClick={handleLogout}
+          >
             <FiLogOut /> Cerrar sesión
           </button>
         </div>
@@ -235,7 +235,9 @@ export default function Dashboard() {
       </main>
 
       {/* Modal */}
-      <PerfilModal show={showPerfilModal} onClose={() => setShowPerfilModal(false)} />
+      {showPerfilModal && (
+        <PerfilModal show={showPerfilModal} onClose={() => setShowPerfilModal(false)} />
+      )}
     </div>
   );
 }

@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/authSlice';
 import { setTheme } from '../redux/themeSlice';
 import { useNavigate } from 'react-router-dom';
 import defaultPhoto from '../assets/login.jpg';
-import { FiLogOut, FiSun, FiMoon, FiMonitor } from 'react-icons/fi';
+import { FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import Select from 'react-select';
 import '../styles/Dashboard.css';
+import PerfilModal from '../modal/Perfil'; // asegúrate que exporte default
 
 export default function SidebarLayout({ children }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const theme = useSelector((state) => state.theme.mode);
+  const [showPerfilModal, setShowPerfilModal] = useState(false); // Estado del modal
 
   const handleLogout = () => {
     dispatch(logout());
@@ -96,16 +98,19 @@ export default function SidebarLayout({ children }) {
         </div>
 
         <div className="logout mt-auto d-flex flex-column gap-2">
-          <button className="btn" onClick={() => navigate('/perfil')}>
-            Perfil
-          </button>
-          <button className="btn logout-btn" onClick={handleLogout}>
+
+          <button className="btn logout-btn d-flex align-items-center gap-2" onClick={handleLogout}>
             <FiLogOut size={18} /> Cerrar sesión
           </button>
         </div>
       </aside>
 
       <main className="main-content">{children}</main>
+
+      {/* Modal de perfil */}
+      {showPerfilModal && (
+        <PerfilModal user={user} onClose={() => setShowPerfilModal(false)} />
+      )}
     </div>
   );
 }

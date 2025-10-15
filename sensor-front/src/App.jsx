@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import DetalleSensor from './pages/SensorDetail';
 import ResetPassword from './modal/RecuperarContrasena';
+import ManageUsers from './pages/ManageUsers'; // 🔹 Nueva página
 import './App.css';
 
 // Componente para proteger rutas
@@ -46,7 +47,7 @@ function App() {
     <Routes>
       {/* Rutas públicas */}
       <Route path="/" element={<Login />} />
-      <Route path="/reset-password" element={<ResetPassword />} /> {/* 🔹 Nueva ruta */}
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Rutas privadas */}
       <Route
@@ -62,6 +63,15 @@ function App() {
         element={
           <PrivateRoute>
             <DetalleSensor />
+          </PrivateRoute>
+        }
+      />
+      {/* 🔹 Ruta para gestión de usuarios */}
+      <Route
+        path="/manage-users"
+        element={
+          <PrivateRoute>
+            <ManageUsers />
           </PrivateRoute>
         }
       />
